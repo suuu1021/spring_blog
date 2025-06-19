@@ -1,5 +1,6 @@
 package com.tenco.blog.model;
 
+import com.tenco.blog.utills.MyDateUtil;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -24,4 +25,9 @@ public class Board {
     private String content;
     private String username;
     private Timestamp createdAt; // created_at (스네이크 케이스로 자동 변환)
+
+    // 머스태치에서 표현할 시간의 포맷기능(행위)을 스스로 만들자
+    public String getTime() {
+        return MyDateUtil.timestampFormat(createdAt);
+    }
 }
