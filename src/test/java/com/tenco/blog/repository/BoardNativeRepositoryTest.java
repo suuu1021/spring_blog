@@ -23,6 +23,21 @@ public class BoardNativeRepositoryTest {
 //    }
 
     @Test
+    public void findById_test() {
+        // given
+        Long id = 1L;
+
+        // when
+        Board board = br.findById(id);
+
+        // then
+        Assertions.assertThat(board.getTitle()).isEqualTo("제목1");
+        Assertions.assertThat(board.getUsername()).isEqualTo("ssar");
+        // 객체가 null이 아닌지 확인
+        Assertions.assertThat(board).isNotNull();
+    }
+
+    @Test
     public void findAll_test() {
         // given - 테스트를 위한 준비 단계
         // 게시글 목록 조회 정상 작동 하는지 확인 --> data.sql 파일에 데이터 준비되어 있음
