@@ -21,6 +21,16 @@ public class BoardNativeRepository {
         this.em = em;
     }
 
+    // 특정 게시글을 삭제하는 메서드
+    @Transactional
+    public void deleteById(Long id) {
+        Query query = em.createNativeQuery("delete from board_tb where id = ? ");
+        query.setParameter(1, id);
+
+        // Insert, Update, Delete 실행 시킬 때
+        query.executeUpdate();
+    }
+
     public Board findById(Long id) {
         // WHERE 조건절을 활용해서 한 건의 데이터를 조회
         String sqlStr = "select * from board_tb where id = ? ";
@@ -34,7 +44,6 @@ public class BoardNativeRepository {
         // 주의 : 혹시 결과가 2개 행이 리턴이 된다면 예외가 발생하게 된다.
         return (Board) query.getSingleResult();
     }
-
 
     // 게시글 목록 조회
     public List<Board> findAll() {
@@ -51,7 +60,6 @@ public class BoardNativeRepository {
         return query.getResultList();
     }
 
-
     @Transactional
     public void save(String title, String content, String username) {
 
@@ -63,5 +71,22 @@ public class BoardNativeRepository {
         query.setParameter(3, username);
 
         query.executeUpdate();
+    }
+
+    @Transactional
+    public void updateById(Long id, String title, String content, String username) {
+        // 업데이트 쿼리, where 절 반드시 사용
+        String sqlStr = "update board_tb set title = ?, " +
+                "content = ?, username = ?" +
+                " where id = ? ";
+        Query query = em.createNativeQuery(sqlStr);
+
+        query.setParameter(1, title);
+        query.setParameter(2, content);
+        query.setParameter(3, username);
+        query.setParameter(4, id);
+
+        int updateRows = query.executeUpdate();
+        System.out.println("수정된 행의 개수 : " + updateRows);
     }
 }
